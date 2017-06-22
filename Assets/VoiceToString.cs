@@ -197,4 +197,12 @@ public class VoiceToString : MonoBehaviour
     //{
     //    debugText.text = audioToString;
     //}
+
+    private void OnGUI()
+    {
+        if (GUILayout.Button("Srart"))
+            StartMic();
+        if (GUILayout.Button("End"))
+            EndMic();
+    }
 }
