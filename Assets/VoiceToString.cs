@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using System.Text;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class VoiceToString : MonoBehaviour
 {
@@ -63,10 +64,7 @@ public class VoiceToString : MonoBehaviour
         clipByte = GetClipData();
         len = clipByte.Length;
         speech = Convert.ToBase64String(clipByte);
-        StartCoroutine(GetToken(getTokenAPIPath));
-        Debug.Log(len);
-        Debug.Log(audioLength);
-        
+        StartCoroutine(GetToken(getTokenAPIPath,Test));
     }
 
     /// <summary>
@@ -114,7 +112,7 @@ public class VoiceToString : MonoBehaviour
     /// </summary>
     /// <param name="url">获取的url</param>
     /// <returns></returns>
-    private IEnumerator GetToken(string url)
+    private IEnumerator GetToken(string url, UnityAction<string> _callback)
     {
         WWWForm getTForm = new WWWForm();
         getTForm.AddField("grant_type", grant_Type);
@@ -128,7 +126,7 @@ public class VoiceToString : MonoBehaviour
             if (getTW.error == null)
             {
                 token = JsonMapper.ToObject(getTW.text)["access_token"].ToString();
-                StartCoroutine(GetAudioString(baiduAPI));
+                StartCoroutine(GetAudioString(baiduAPI, _callback));
             }
             else
                 Debug.LogError(getTW.error);
@@ -140,7 +138,7 @@ public class VoiceToString : MonoBehaviour
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    private IEnumerator GetAudioString(string url)
+    private IEnumerator GetAudioString(string url,UnityAction<string> _callback)
     {
         JsonWriter jw = new JsonWriter();
         jw.WriteObjectStart();
@@ -172,7 +170,7 @@ public class VoiceToString : MonoBehaviour
                     audioToString = getASWJson["result"][0].ToString();
                     if (audioToString.Substring(audioToString.Length - 1) == "，")
                         audioToString = audioToString.Substring(0, audioToString.Length - 1);
-                    Debug.Log(audioToString);
+                    _callback(audioToString);
                 }
                 audioToString = null;
             }
@@ -192,11 +190,10 @@ public class VoiceToString : MonoBehaviour
         aud.playOnAwake = false;
     }
 
-    //public Text debugText;
-    //private void Update()
-    //{
-    //    debugText.text = audioToString;
-    //}
+    private void Test(string _str)
+    {
+        Debug.Log(_str);
+    }
 
     private void OnGUI()
     {
