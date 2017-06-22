@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class VoiceToString : MonoBehaviour
 {
     private string token;                           //access_token
-    private string cuid = "BIMSOPzhaoliang0710";        //用户标识
+    private string cuid = "自己随便填";        //用户标识
     private string format = "wav";                  //语音格式
     private int rate = 8000;                        //采样率
     private int channel = 1;                        //声道数
@@ -19,8 +19,8 @@ public class VoiceToString : MonoBehaviour
     private string lan = "zh";                      //语种
 
     private string grant_Type = "client_credentials";  
-    private string client_ID = "3Dpp3SLlEGn4CLSgH65UVjkr";                       //百度appkey
-    private string client_Secret = "4f7869a6ae3da67db1c689883357858e";                   //百度Secret Key
+    private string client_ID = "你的百度语音Api Key";                       //百度apikey
+    private string client_Secret = "你的Secret Key";                   //百度Secret Key
 
     private string baiduAPI = "http://vop.baidu.com/server_api";
     private string getTokenAPIPath = "https://openapi.baidu.com/oauth/2.0/token";
